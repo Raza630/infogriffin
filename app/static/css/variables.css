@@ -1,0 +1,78 @@
+/* variables.css */
+:root {
+  /* Light Theme (default) */
+  --color-primary: #fff;
+  --color-primary-dark: #1a252f;
+  --color-secondary: #34495e;
+  --color-accent: #3498db;
+  --color-accent-dark: #2980b9;
+  --color-text: #2c3e50;
+  --color-text-light: #7f8c8d;
+  --color-bg: #f9f9f9;
+  --color-surface: #f1f3f9;
+  --color-border: #e0e0e0;
+  --color-error: #e74c3c;
+  --color-success: #2ecc71;
+  --color-warning: #f39c12;
+
+  /* Dark Theme variants */
+  --d-color-primary: #3498db;
+  --d-color-primary-dark: #2980b9;
+  --d-color-secondary: #2c3e50;
+  --d-color-accent: #bb86fc;
+  --d-color-text: #ecf0f1;
+  --d-color-text-light: #bdc3c7;
+  --d-color-bg: #1a252f;
+  --d-color-surface: #2c3e50;
+  --d-color-border: #34495e;
+  --d-color-error: #e74c3c;
+  
+  /* Fonts */
+  --font-main: 'Poppins', sans-serif;
+  --font-heading: 'Roboto Slab', serif;
+  
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+  
+  /* Component-specific variables (light theme) */
+  --header-bg: var(--color-primary);
+  --header-text: white;
+  --nav-bg: var(--color-secondary);
+  --nav-link: white;
+  --nav-link-hover: rgba(255,255,255,0.8);
+  --card-bg: var(--color-surface);
+  --card-text: var(--color-text);
+  --card-shadow: var(--shadow-sm);
+  --footer-bg: var(--color-primary);
+  --footer-text: white;
+}
+
+/* Dark Theme Overrides */
+[data-theme="dark"] {
+  --color-primary: var(--d-color-primary);
+  --color-primary-dark: var(--d-color-primary-dark);
+  --color-secondary: var(--d-color-secondary);
+  --color-text: var(--d-color-text);
+  --color-text-light: var(--d-color-text-light);
+  --color-bg: var(--d-color-bg);
+  --color-surface: var(--d-color-surface);
+  --color-border: var(--d-color-border);
+  
+  /* Component-specific dark theme overrides */
+  --header-bg: var(--d-color-primary);
+  --header-text: black;
+  --nav-bg: var(--d-color-secondary);
+  --card-bg: var(--d-color-surface);
+  --card-text: var(--d-color-text);
+  --card-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  --footer-bg: var(--d-color-primary);
+}

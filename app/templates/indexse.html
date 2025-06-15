@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-content">
+        <h2>Stay Informed with Smart News</h2>
+        <!-- <p>Curated news from multiple sources powered by AI</p> -->
+    
+        
+        <div class="trending-tags">
+            <span>Trending:</span>
+            {% for query in queries[:5] %}
+            <a href="/?query={{ query }}" class="tag">{{ query }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="filter-section">
+    <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="for-you">For You</button>
+        <button class="filter-tab" data-filter="trending">Trending</button>
+        <button class="filter-tab" data-filter="latest">Latest</button>
+        {% for query in queries %}
+        <button class="filter-tab" data-filter="{{ query|lower|replace(' ', '-') }}">{{ query }}</button>
+        {% endfor %}
+    </div>
+</section>
+
+
+<section class="news-section">
+    <div class="section-header d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Top Stories</h3>
+        <div class="view-controls btn-group" role="group">
+            <button class="view-btn btn btn-outline-primary active" data-view="grid" title="Grid View">
+                <i class="fas fa-th"></i>
+                <span class="d-none d-sm-inline"> Grid</span>
+            </button>
+            <button class="view-btn btn btn-outline-primary" data-view="list" title="List View">
+                <i class="fas fa-list"></i>
+                <span class="d-none d-sm-inline"> List</span>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Grid View (shown by default) -->
+    <div class="news-grid view-content" id="grid-view">
+        {% for article in articles %}
+        <article class="news-card" data-id="{{ article.id }}">
+            <!-- Your grid card content -->
+            <div class="card-badge">{{ article.source }}</div>
+            <img src="{{ article.image_url }}" alt="{{ article.headline }}" class="card-image">
+            <div class="card-content">
+                <div class="card-meta">
+                    <time datetime="{{ article.date }}">{{ article.date.strftime('%b %d, %Y') }}</time>
+                    <span>•</span>
+                    <span class="read-time">{{ (article.headline|length + article.description|length)//200 + 1 }} min read</span>
+                </div>
+                <h3 class="card-title">{{ article.headline }}</h3>
+                <p class="card-desc">{{ article.description }}</p>
+                <div class="card-actions">
+                    <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                    <a href="{{ article.link }}" target="_blank" class="read-more">Read Full Story <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    
+    <!-- List View (hidden by default) -->
+    <div class="news-list view-content d-none" id="list-view">
+        {% for article in articles %}
+        <article class="news-item" data-id="{{ article.id }}">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <img src="{{ article.image_url }}" alt="{{ article.headline }}" class="img-fluid rounded">
+                </div>
+                <div class="col-md-9">
+                    <div class="card-badge">{{ article.source }}</div>
+                    <div class="card-meta">
+                        <time datetime="{{ article.date }}">{{ article.date.strftime('%b %d, %Y') }}</time>
+                        <span>•</span>
+                        <span class="read-time">{{ (article.headline|length + article.description|length)//200 + 1 }} min read</span>
+                    </div>
+                    <h3 class="card-title">{{ article.headline }}</h3>
+                    <p class="card-desc">{{ article.description }}</p>
+                    <div class="card-actions">
+                        <button class="bookmark-btn"><i class="far fa-bookmark"></i></button>
+                        <a href="{{ article.link }}" target="_blank" class="read-more">Read Full Story <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    <div class="load-more text-center mt-4">
+        <button class="btn btn-outline-primary" id="load-more-btn">
+            <i class="fas fa-plus"></i> Load More Stories
+        </button>
+    </div>
+
+    <!-- Rest of your code remains the same -->
+</section>
+
+
+<section class="newsletter-section">
+    <div class="newsletter-container">
+        <h3>Get Daily News Digest</h3>
+        <p>Subscribe to our newsletter for curated news in your inbox</p>
+        
+        <form class="newsletter-form">
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit" class="btn-primary">Subscribe</button>
+        </form>
+    </div>
+</section>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfoGriffin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">InfoGriffin</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#articles">Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#search-results">Search</a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>InfoGriffin</h1>
+        <div class="form-container">
+            <form action="/scrape" method="POST">
+                <div class="form-group">
+                    <label for="url">Enter URL:</label>
+                    <input type="text" name="url" id="url" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Scrape and Save</button>
+            </form>
+        </div>
+        <div class="center">
+            <a href="https://www.free-counters.org/">Visitor Counter</a>
+            <script type="text/javascript" src="https://www.freevisitorcounters.com/auth.php?id=6db049e48f824d59e8cac46fe765f5de4b3657f8"></script>
+            <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1243348/t/5"></script>
+        </div>
+        
+        <div class="center">
+            {{ result }}
+        </div>
+
+        <div id="articles" class="mt-5">
+            <h2 class="mb-4">Google News Articles</h2>
+            <form method="get" action="/">
+                <div class="form-group">
+                    <label for="query">Filter by Query:</label>
+                    <select name="query" id="query" class="form-control" onchange="this.form.submit()">
+                        <option value="">All</option>
+                        {% for query in queries %}
+                        <option value="{{ query }}" {% if query == request.args.get('query') %}selected{% endif %}>{{ query }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+
+            <div class="horizontal-scroll">
+                {% for article in articles %}
+                <div class="card">
+                    <img src="{{ article.image_url }}" alt="Thumbnail" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.headline }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ article.source }} - {{ article.date }}</h6>
+                        <p class="card-text">{{ article.description }}</p>
+                        <a href="{{ article.link }}" class="card-link" target="_blank">Read more</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="search-results" class="mt-5">
+            <h2 class="mb-4">Search Results</h2>
+            <form method="get" action="/">
+                <div class="form-group">
+                    <label for="custom-query">Enter Custom Query:</label>
+                    <input type="text" name="custom_query" id="custom-query" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+
+            <div class="horizontal-scroll mt-4">
+                {% if custom_query %}
+                    {% for article in articles %}
+                        {% if custom_query.lower() in article.headline.lower() or custom_query.lower() in article.description.lower() %}
+                        <div class="card">
+                            <img src="{{ article.image_url }}" alt="Thumbnail" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ article.headline }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ article.source }} - {{ article.date }}</h6>
+                                <p class="card-text">{{ article.description }}</p>
+                                <a href="{{ article.link }}" class="card-link" target="_blank">Read more</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 InfoGriffin. All rights reserved.</p>
+            <p>Contact us: <a href="mailto:info@infogriffin.com" class="text-white">info@infogriffin.com</a></p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Scraping with Flask</title>
+    <style>
+        body {
+            background-color: #b8fffb;
+            /* background-image: url('https://i.pinimg.com/originals/88/15/63/881563d6444b370fa4ceea0c3183bb4c.gif'); */
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: blue;
+            text-align: center;
+        }
+        p {
+            color: red;
+        }
+        .center {
+            text-align: center;
+        }
+        .form-container {
+            display: block;
+            width: 500px;
+            max-width: 700px;
+            margin: auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .form-container label, .form-container input, .form-container button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button {
+            animation: cubic-bezier(0.075, 0.82, 0.165, 1);
+            color: black;
+            background-color: #0077b6;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00ced1;
+        }
+        .horizontal-scroll {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+            gap: 10px;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            min-width: 300px;
+            padding: 10px;
+            background-color: #fff;
+            flex: 0 0 auto;
+        }
+        .card-title {
+            font-size: 1.25em;
+            margin-bottom: 10px;
+        }
+        .card-subtitle {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .card-text {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+        .card-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .card-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Web Scraping with Flask</h1>
+    <div class="form-container">
+        <form action="/scrape" method="POST">
+            <label for="url">Enter URL:</label>
+            <input type="text" name="url" id="url" required>
+            <button type="submit">Scrape and Save</button>
+        </form>
+    </div>
+    <div class="center">
+        <!<script async src="https://cse.google.com/cse.js?cx=050f81ed362b9471e"></script> -->
+        <!-- <div class="gcse-search"></div>  -->
+        <!-- <a href="https://www.free-counters.org/">Visitor Counter</a>
+        <script type="text/javascript" src="https://www.freevisitorcounters.com/auth.php?id=6db049e48f824d59e8cac46fe765f5de4b3657f8"></script>
+        <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1243348/t/5"></script>
+    </div>
+    
+    <div class="center">
+        {{ result }}
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Google News Articles</h2>
+        <form method="get" action="/">
+            <label for="query">Filter by Query:</label>
+            <select name="query" id="query" onchange="this.form.submit()">
+                <option value="">All</option>
+                {% for query in queries %}
+                <option value="{{ query }}" {% if query == request.args.get('query') %}selected{% endif %}>{{ query }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <div class="horizontal-scroll">
+            {% for article in articles %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ article.headline }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ article.source }} - {{ article.date }}</h6>
+                    <p class="card-text">{{ article.description }}</p>
+                    <a href="{{ article.link }}" class="card-link" target="_blank">Read more</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html> --> -->
+
+
+
+
+
